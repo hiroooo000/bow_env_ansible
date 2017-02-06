@@ -1,0 +1,16 @@
+---
+# bash on ubuntu on windows environment
+- hosts: localhost
+  tasks:
+    - name: be sure apt sources.list
+      become: yes
+      copy: src=./files/sources.list dest=/etc/apt/sources.list backup=yes
+
+    - name: be sure packages are installed
+      become: yes
+      apt:  name={{ item }}  state=latest update_cache=yes
+      with_items:
+      - global
+      - expect
+      - tmux
+
