@@ -13,4 +13,21 @@
       - global
       - expect
       - tmux
+      - unzip
+  
+    - name: be sure .vim/plugin dir is existed
+      file:
+        path: ~/.vim/plugin
+        state: directory
 
+    - name: global gtags.vim
+      copy:
+        src: /usr/share/doc/global/examples/gtags.vim.gz
+        dest: ~/.vim/plugin
+    
+    - command: gunzip ~/.vim/plugin/gtags.vim.gz creates=~/.vim/plugin/gtags.vim
+
+    - name: be sure .tmux.conf is deployed.
+      copy: 
+        src: files/.tmux.conf
+        dest: ~/.tmux.conf
