@@ -31,3 +31,10 @@
       copy: 
         src: files/.tmux.conf
         dest: ~/.tmux.conf
+
+    - name: setting ps1
+      lineinfile:
+        dest: ~/.bashrc
+        regexp: "export PS1="
+        line: 'export PS1="[\w]\n\\$ "'
+
