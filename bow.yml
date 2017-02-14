@@ -14,6 +14,7 @@
       - expect
       - tmux
       - unzip
+      - python-pip
   
     - name: be sure .vim/plugin dir is existed
       file:
@@ -38,3 +39,33 @@
         regexp: "export PS1="
         line: 'export PS1="[\w]\n\\$ "'
 
+    - name: add docker repo key
+      become: yes
+      apt_key:
+        url: https://apt.dockerproject.org/gpg
+
+    - name: ensure docker's apt repository exists
+      become: true
+      apt_repository:
+        repo:  deb https://apt.dockerproject.org/repo ubuntu-trusty main
+        filename: docker.list
+
+    - name: ensure docker is installed
+      become: true
+      apt: 
+        name: docker-engine
+        state: latest
+        update_cache: yes 
+        cache_valid_time: 86400
+
+    - name: ensure docker-compose is installed
+      become: true
+      pip:
+        name: docker-compose
+        state: latest
+
+    - name: setting export DOCKER_HOST
+      lineinfile:
+        dest: ~/.bashrc
+        regexp: "export DOCKER_HOST="
+        line: 'export DOCKER_HOST=tcp://localhost:2375'
