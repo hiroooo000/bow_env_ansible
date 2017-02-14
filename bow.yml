@@ -2,11 +2,11 @@
 # bash on ubuntu on windows environment
 - hosts: localhost
   tasks:
-    - name: be sure apt sources.list
+    - name: ensure apt sources.list
       become: yes
       copy: src=./files/sources.list dest=/etc/apt/sources.list backup=yes
 
-    - name: be sure packages are installed
+    - name: ensure packages are installed
       become: yes
       apt:  name={{ item }}  state=latest update_cache=yes cache_valid_time=86400
       with_items:
@@ -16,30 +16,30 @@
       - unzip
       - python-pip
   
-    - name: be sure .vim/plugin dir is existed
+    - name: ensure .vim/plugin dir is existed
       file:
         path: ~/.vim/plugin
         state: directory
 
-    - name: global gtags.vim
+    - name: ensure global gtags.vim is deployed
       copy:
         src: /usr/share/doc/global/examples/gtags.vim.gz
         dest: ~/.vim/plugin
     
     - command: gunzip ~/.vim/plugin/gtags.vim.gz creates=~/.vim/plugin/gtags.vim
 
-    - name: be sure .tmux.conf is deployed.
+    - name: ensure .tmux.conf is deployed
       copy: 
         src: files/.tmux.conf
         dest: ~/.tmux.conf
 
-    - name: setting ps1
+    - name: ensure setting ps1 is configured
       lineinfile:
         dest: ~/.bashrc
         regexp: "export PS1="
         line: 'export PS1="[\w]\n\\$ "'
 
-    - name: add docker repo key
+    - name: ensure docker repo key is added
       become: yes
       apt_key:
         url: https://apt.dockerproject.org/gpg
@@ -64,7 +64,7 @@
         name: docker-compose
         state: latest
 
-    - name: setting export DOCKER_HOST
+    - name: ensure DOCKER_HOST is configured
       lineinfile:
         dest: ~/.bashrc
         regexp: "export DOCKER_HOST="
