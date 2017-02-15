@@ -69,3 +69,17 @@
         dest: ~/.bashrc
         regexp: "export DOCKER_HOST="
         line: 'export DOCKER_HOST=tcp://localhost:2375'
+
+    - name: ensure symlink for /c for docker window is exists
+      become: yes
+      file:
+        src: /mnt/c
+        path: /c
+        state: link
+
+#    - name: ensure symlink for /e for docker window is exists
+#      file:
+#        src: /mnt/e
+#        path: /e
+#        state: link
+#
